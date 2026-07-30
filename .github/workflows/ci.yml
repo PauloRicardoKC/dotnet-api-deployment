@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: 10.0.x
+  BUILD_CONFIGURATION: Release
+  SOLUTION_FILE: dotnet-minimal-api-foundation.slnx
+  API_PROJECT: src/MinimalApi.Api/MinimalApi.Api.csproj
+  TEST_RESULTS_DIRECTORY: TestResults
+
+jobs:
+  build-test-package:
+    name: Build, testes e artefato
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configurar .NET ${{ env.DOTNET_VERSION }} com cache NuGet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+      - name: Restore
+        run: |
+          dotnet restore ${{ env.SOLUTION_FILE }}
+          echo "✔ Restore concluído"
+      - name: Build
+        run: |
+          dotnet build ${{ env.SOLUTION_FILE }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+          echo "✔ Build concluído"
+      - name: Testes unitários
+        run: |
+          dotnet test tests/MinimalApi.UnitTests/MinimalApi.UnitTests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --logger "trx;LogFileName=unit-tests.trx" --results-directory ${{ env.TEST_RESULTS_DIRECTORY }}/unit
+          echo "✔ Testes unitários executados"
+      - name: Testes de integração
+        run: |
+          dotnet test tests/MinimalApi.IntegrationTests/MinimalApi.IntegrationTests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --logger "trx;LogFileName=integration-tests.trx" --results-directory ${{ env.TEST_RESULTS_DIRECTORY }}/integration
+          echo "✔ Testes de integração executados"
+      - name: Publicar resultados dos testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ github.sha }}
+          path: ${{ env.TEST_RESULTS_DIRECTORY }}
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Publicar aplicação
+        run: |
+          dotnet publish ${{ env.API_PROJECT }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --output publish /p:UseAppHost=false
+          echo "✔ Aplicação publicada para artefato"
+      - name: Enviar artefato da aplicação
+        uses: actions/upload-artifact@v4
+        with:
+          name: minimal-api-${{ github.sha }}
+          path: publish
+          if-no-files-found: error
+          retention-days: 14
+      - name: Confirmar conclusão
+        run: echo "✔ Artifact publicado"

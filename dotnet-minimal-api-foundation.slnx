@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MinimalApi.Api/MinimalApi.Api.csproj" />
+    <Project Path="src/MinimalApi.Application/MinimalApi.Application.csproj" />
+    <Project Path="src/MinimalApi.Domain/MinimalApi.Domain.csproj" />
+    <Project Path="src/MinimalApi.Infrastructure/MinimalApi.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MinimalApi.IntegrationTests/MinimalApi.IntegrationTests.csproj" />
+    <Project Path="tests/MinimalApi.UnitTests/MinimalApi.UnitTests.csproj" />
+  </Folder>
+</Solution>

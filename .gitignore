@@ -1,0 +1,58 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+artifacts/
+publish/
+
+# Test results and code coverage
+[Tt]est[Rr]esult*/
+TestResult.xml
+*.VisualState.xml
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+*.coveragexml
+
+# Runtime logs
+[Ll]og/
+[Ll]ogs/
+*.binlog
+
+# Visual Studio and Rider user files
+.vs/
+.idea/
+.vscode/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.sln.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Local configuration and publishing secrets
+appsettings.Local.json
+*.publishsettings
+*.pubxml
+*.azurePubxml
+*.pfx
+
+# NuGet packages and generated package metadata
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+
+# Temporary files
+*.tmp
+*.log
+*~
+~$*
