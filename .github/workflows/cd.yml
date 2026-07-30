@@ -25,7 +25,6 @@ jobs:
     timeout-minutes: 20
     environment:
       name: production
-      url: https://${{ secrets.AZURE_WEBAPP_NAME }}.azurewebsites.net
     concurrency:
       group: production
       cancel-in-progress: false
