@@ -33,7 +33,7 @@ CD (successful push to main only) -> configure App Service -> deploy -> GET /hea
 CI runs on pushes to `main` and pull requests targeting `main`.
 
 1. `actions/checkout@v4` downloads the commit to validate.
-2. `actions/setup-dotnet@v4` installs .NET 10 and enables NuGet caching. The cache is automatically invalidated when dependency files change, reducing execution time in subsequent runs.
+2. `actions/setup-dotnet@v4` installs .NET 10. `actions/cache@v4` restores the NuGet package cache; its key includes the project files, `NuGet.Config`, and `global.json`, so it is invalidated when dependencies or the SDK change.
 3. `dotnet restore` retrieves packages; `dotnet build --no-restore` builds the Release solution without repeating that work.
 4. Unit and integration test projects run separately. Each generates a `.trx` file in `TestResults`, making failures easier to investigate.
 5. `actions/upload-artifact@v4` stores test results even if a test fails (`if: always()`).

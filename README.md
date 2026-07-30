@@ -1,4 +1,4 @@
-# 01 — .NET Minimal API: CI/CD on Azure
+# .NET Minimal API: CI/CD on Azure
 
 An existing .NET 10 API, with no new business functionality, evolved to demonstrate professional CI/CD using GitHub Actions and Azure App Service. The automation validates builds and tests, produces an immutable package, and deploys it automatically after approval on `main`.
 

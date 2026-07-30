@@ -33,7 +33,7 @@ CD (somente push aprovado na main) -> configura App Service -> deploy -> GET /he
 É acionada em `push` na `main` e em pull requests cujo destino é a `main`.
 
 1. `actions/checkout@v4` baixa o commit que será validado.
-2. `actions/setup-dotnet@v4` instala o .NET 10 e ativa o cache de NuGet. O cache é automaticamente invalidado quando os arquivos de dependências mudam, reduzindo o tempo das execuções seguintes.
+2. `actions/setup-dotnet@v4` instala o .NET 10. `actions/cache@v4` restaura o cache de pacotes NuGet; sua chave considera os projetos, `NuGet.Config` e `global.json`, sendo invalidada quando dependências ou SDK mudam.
 3. `dotnet restore` recupera os pacotes; `dotnet build --no-restore` compila a solução em `Release` sem repetir esse trabalho.
 4. Os projetos unitário e de integração são executados separadamente. Cada um gera um arquivo `.trx` em `TestResults`, facilitando a investigação de falhas.
 5. `actions/upload-artifact@v4` guarda os resultados mesmo se um teste falhar (`if: always()`).
